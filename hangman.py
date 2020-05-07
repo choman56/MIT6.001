@@ -12,7 +12,7 @@
 import random
 import string
 
-WORDLIST_FILENAME = "words.txt"
+WORDLIST_FILENAME = "./words.txt"
 NOT_FOUND = -1
 
 def load_words():
@@ -195,7 +195,7 @@ Each correct guess will be displayed in a string with underscores unguessed lett
         if availableletters != '':
             print('Available letters:', availableletters)
             
-        inputstr = input('Please guess a letter or guess the secret word: ')
+        inputstr = input('Please guess a letter or guess the secret word (enter an "*" to view clues): ')
         if len(inputstr) > 1:      # try to guess the word
             if inputstr == secret_word:
                 print('Congratulations! You guessed the secret word')
