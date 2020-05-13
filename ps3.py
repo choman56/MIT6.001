@@ -3,9 +3,9 @@
 # The 6.0001 Word Game
 # Created by: Kevin Luu <luuk> and Jenna Wiens <jwiens>
 #
-# Name          : <your name>
-# Collaborators : <your collaborators>
-# Time spent    : <total time>
+# Name          : Clarke Homan
+# Collaborators : <none>
+# Time spent    : ~ 12 hours
 
 import math
 import random
@@ -323,11 +323,27 @@ def play_hand(hand, word_list):
     """
     runningScore = 0
     numLetters = calculate_handlen(hand)
+    
 
     print('')
-    while numLetters  > 0:
-        print('\n\tCurrent hand:', end='  ')
+    print('\n\tCurrent hand:', end='  ')
+    display_hand(hand)
+    print('\nDo you want to replace a letter before playing hand?')
+    replaceDecision = input("Type in a 'Y' or 'y' for Yes or a 'N' or 'n' for No: ")
+    if (replaceDecision == 'Y') or (replaceDecision == 'y'):
+        replacementLetter = input('Enter letter to be replaced: ')
+        hand = substitute_hand(hand,replacementLetter)
+        print('\n\tUpdated hand:', end='  ')
         display_hand(hand)
+    shouldDisplayHand = False
+    
+    while numLetters  > 0:
+        if not shouldDisplayHand:
+            shouldDisplayHand = True
+        else:
+            print('\n\tCurrent hand:', end='  ')
+            display_hand(hand)
+            
         starNumber = 0
         starNumber = hand.get('*',0) # find letter in hand, fetching the letter's current count
         if starNumber > 0:
@@ -346,40 +362,8 @@ def play_hand(hand, word_list):
             print('\nOOPS! Word:', word, 'is a invalid word!', 'Current Score is:', runningScore)
         hand = update_hand(hand, word)
         numLetters = calculate_handlen(hand)
-            
-    # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
-    # Keep track of the total score
-    
-    # As long as there are still letters left in the hand:
-    
-        # Display the hand
         
-        # Ask user for input
-        
-        # If the input is two exclamation points:
-
-        
-            # End the game (break out of the loop)
-
-            
-        # Otherwise (the input is not two exclamation points):
-
-            # If the word is valid:
-
-                # Tell the user how many points the word earned,
-                # and the updated total score
-
-            # Otherwise (the word is not valid):
-                # Reject invalid word (print a message)
-                
-            # update the user's hand by removing the letters of their inputted word
-            
-
-    # Game is over (user entered '!!' or ran out of letters),
-    # so tell user the total score
-
-    # Return the total score as result of function
-
+    return runningScore
 
 
 #
@@ -410,11 +394,35 @@ def substitute_hand(hand, letter):
     already in the hand.
     
     hand: dictionary (string -> int)
-    letter: string
+    letter: string (one character)
     returns: dictionary (string -> int)
     """
+    newHand = {}       # start with empty return hand
+    letterLength = len(letter)
+    if letterLength != 1:
+        print ('Substitute Letter Procedure Error: can only replace letter in a hand', letter)
+        return newHand
     
-    pass  # TO DO... Remove this line when you implement this function
+    if letter in hand:
+        letterNumber = hand.get(letter) # fetch the letter's current count
+        hand.pop(letter)
+        for i in hand:
+            tempDict = {i:hand.get(i)}
+            newHand.update(tempDict)   # add remaining hand element
+        numLetters = calculate_handlen(newHand)
+        missingLetters = HAND_SIZE - numLetters
+        if missingLetters > 0:       # need to add missing letters to get inital HAND_SIZE
+            for j in range(missingLetters):    # add missing letters that were deleted 
+                if VOWELS.find(letter) != -1:
+                    x = random.choice(VOWELS)
+                if CONSONANTS.find(letter) != -1:  # these should be mutually exclusinve
+                    x = random.choice(CONSONANTS)
+                newHand[x] = newHand.get(x, 0) + 1
+            
+    return newHand
+    
+    
+    # pass  # TO DO... Remove this line when you implement this function
        
     
 def play_game(word_list):
