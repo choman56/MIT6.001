@@ -411,13 +411,16 @@ def substitute_hand(hand, letter):
             newHand.update(tempDict)   # add remaining hand element
         numLetters = calculate_handlen(newHand)
         missingLetters = HAND_SIZE - numLetters
-        if missingLetters > 0:       # need to add missing letters to get inital HAND_SIZE
-            for j in range(missingLetters):    # add missing letters that were deleted 
-                if VOWELS.find(letter) != -1:
-                    x = random.choice(VOWELS)
-                if CONSONANTS.find(letter) != -1:  # these should be mutually exclusinve
-                    x = random.choice(CONSONANTS)
+        # if missingLetters > 0:       # need to add missing letters to get inital HAND_SIZE
+        while missingLetters > 0:
+            # for j in range(missingLetters):    # add missing letters that were deleted 
+            if VOWELS.find(letter) != -1:
+                x = random.choice(VOWELS)
+            if CONSONANTS.find(letter) != -1:  # these should be mutually exclusinve
+                x = random.choice(CONSONANTS)
+            if (newHand.get(x) == None) and (x != letter):
                 newHand[x] = newHand.get(x, 0) + 1
+                missingLetters -= 1
             
     return newHand
     
@@ -456,7 +459,30 @@ def play_game(word_list):
     word_list: list of lowercase strings
     """
     
-    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
+    totalScore = 0
+    print('Welcome to my word game')
+    print('The object of the game is to create words from the dealt hand, letter chosen at random for you')
+    print('You will be asked how many hands (rounds) you want to play')
+    print('The hand will then be displayed with', HAND_SIZE, 'letters for you to create words from.')
+    print('If the word you enter contains letters from the hand and is a valid word in the program dictionary,')
+    print('then a score will be calculated based upon the letter values in the played word. You score will be')
+    print('accumulated for the game.')
+    print("If a hand contains a '*', that character is a wild card letter that can represent a vowel.")
+    print('At the beginning of each round, you can decide to replace a letter in the dealt hand.')
+    print('\nAre you ready to play?')
+    response = input('Enter a "y" to continue or any other character will quit the game: ')
+    
+    if response == 'y':
+        numGames = int(input('Enter the number of hands you want to play: '))
+        for i in range(numGames):
+            hand = deal_hand(HAND_SIZE)
+            score = play_hand(hand, word_list)
+            totalScore += score
+        # print('Final score:', totalScore)
+        
+    return totalScore
+    
+    # print("play_game not implemented.") # TO DO... Remove this line when you implement this function
     
 
 
@@ -467,4 +493,5 @@ def play_game(word_list):
 #
 if __name__ == '__main__':
     word_list = load_words()
-    play_game(word_list)
+    totalScore = play_game(word_list)
+    print('Final score:', totalScore)
