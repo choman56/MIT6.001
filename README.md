@@ -3,7 +3,7 @@
 # cahoman@gmail.com
 #
 # Description:
-# I strated going thru the MIT online course (Introduction to Computer Science and Programming in Python (Course number 6.0001)
+# I started going thru the MIT online course (Introduction to Computer Science and Programming in Python (Course number 6.0001)
 # (https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/)
 # in the spring of 2020 to refresh my understanding of basic computer science and learn something about Python programming.
 #
